@@ -1,6 +1,13 @@
 export async function GET() {
-  return new Response(JSON.stringify({ message: "API is working!" }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  console.log(process.env.MOONGOOSE_URI);
+  return new Response(
+    JSON.stringify({
+      message: "API is working!",
+      data: process.env.MOONGOOSE_URI,
+    }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 }

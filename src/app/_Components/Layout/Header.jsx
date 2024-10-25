@@ -7,13 +7,14 @@ import { Toaster, toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Cookies from "universal-cookie";
 import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isPremium, setIsPremium] = useState(false); // Track premium status
+  const [isPremium, setIsPremium] = useState(false);
   const router = useRouter();
   const cookies = new Cookies();
 
@@ -26,15 +27,19 @@ export default function Header() {
 
   const handleCheckout = async () => {
     const stripe = await stripePromise;
+    console.log(stripe);
     try {
-      const response = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${cookies.get("token")}`,
-        },
-      });
-      const data = await response.json();
-
+      const response = await axios.post(
+        "/api/stripe/checkout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${cookies.get("token")}`,
+          },
+        }
+      );
+      const data = response.data;
+      console.log(data);
       if (data.success) {
         await stripe.redirectToCheckout({ sessionId: data.sessionId });
       } else {

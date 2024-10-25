@@ -7,8 +7,11 @@ const authenticateToken = async (req) => {
   if (!token) return null;
 
   try {
+    console.log("Token:", token);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded:", decoded.id);
     const user = await expenseUser.findById(decoded.id);
+    console.log(user);
     return user;
   } catch (error) {
     console.error("Token authentication failed:", error);

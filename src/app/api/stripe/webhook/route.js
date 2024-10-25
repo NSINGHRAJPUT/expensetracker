@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import stripeLib from "stripe";
-import expenseUser from "../../../../model/User";
+import expenseUser from "@/model/User";
 const stripe = stripeLib(process.env.STRIPE_SECRET_KEY);
 
 export const POST = async (req) => {

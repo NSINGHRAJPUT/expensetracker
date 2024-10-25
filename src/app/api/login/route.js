@@ -1,7 +1,7 @@
 const authenticateToken = require("../../../middleware/auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const connectDB = require("../../../dbConfig/db");
+const connectDB = require("@/dbConfig/db");
 const { NextResponse } = require("next/server");
 const expenseUser = require("../../../model/User");
 

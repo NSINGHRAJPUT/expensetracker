@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Header from "../_Components/Layout/Header";
@@ -24,14 +24,30 @@ export default function SignInPage() {
     }));
   };
 
+  const test = async () => {
+    try {
+      const response = await axios.get(`${NEXT_PUBLIC_BASE_URL}/api/test`);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    test();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/login", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${NEXT_PUBLIC_BASE_URL}/api/login`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(response);
       if (response.status === 200) {
         toast.success("Login successful");

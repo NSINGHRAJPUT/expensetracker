@@ -26,7 +26,9 @@ export default function SignInPage() {
 
   const test = async () => {
     try {
-      const response = await axios.get(`${NEXT_PUBLIC_BASE_URL}/api/test`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/test`
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -40,7 +42,7 @@ export default function SignInPage() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${NEXT_PUBLIC_BASE_URL}/api/login`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,
         formData,
         {
           headers: {

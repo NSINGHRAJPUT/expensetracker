@@ -1,9 +1,9 @@
-const authenticateToken = require("../../../middleware/auth");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const connectDB = require("@/dbConfig/db");
-const { NextResponse } = require("next/server");
-const expenseUser = require("../../../model/User");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
+import connectDB from "@/dbConfig/db";
+import expenseUser from "@/model/User";
+import authenticateToken from "@/middleware/auth";
 
 connectDB();
 

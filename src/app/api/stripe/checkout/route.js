@@ -1,24 +1,28 @@
 import expenseUser from "@/model/User";
-
+import { NextResponse } from "next/server";
+import authenticateToken from "@/middleware/auth";
+import jwt from "jsonwebtoken";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const { NextResponse } = require("next/server");
-const authenticateToken = require("@/middleware/auth");
-const jwt = require("jsonwebtoken");
 
 export const POST = async (req) => {
   try {
-    console.log("req", req);
     const token = req.headers.get("authorization")?.split(" ")[1]; // Bearer token
-    if (!token) return null;
+    if (!token) {
+      return new Response(
+        JSON.stringify({ success: false, message: "Unauthorized" }),
+        { status: 401, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await expenseUser.findById(decoded.id);
     if (!user) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
+      return new Response(
+        JSON.stringify({ success: false, message: "Unauthorized" }),
+        { status: 401, headers: { "Content-Type": "application/json" } }
       );
     }
-    console.log(user);
+
     // Create a Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -29,7 +33,7 @@ export const POST = async (req) => {
             product_data: {
               name: "Premium Subscription",
             },
-            unit_amount: 1, // Amount in cents ($9.99)
+            unit_amount: 999, // Amount in cents ($9.99)
           },
           quantity: 1,
         },
@@ -40,12 +44,18 @@ export const POST = async (req) => {
       metadata: { userId: user._id.toString() },
     });
 
-    return NextResponse.json({ success: true, sessionId: session.id });
+    return new Response(
+      JSON.stringify({ success: true, sessionId: session.id }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
   } catch (error) {
     console.error("Error creating checkout session:", error);
-    return NextResponse.json(
-      { success: false, message: "Failed to create checkout session" },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({
+        success: false,
+        message: "Failed to create checkout session",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 };

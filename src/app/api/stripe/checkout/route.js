@@ -45,7 +45,11 @@ export const POST = async (req) => {
     });
 
     return new Response(
-      JSON.stringify({ success: true, sessionId: session.id }),
+      JSON.stringify({
+        success: true,
+        sessionId: session.id,
+        message: "Checkout session created successfully",
+      }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (error) {

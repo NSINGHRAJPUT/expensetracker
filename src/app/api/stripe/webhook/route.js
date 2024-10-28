@@ -4,12 +4,6 @@ import expenseUser from "@/model/User";
 import Order from "@/model/Order";
 const stripe = stripeLib(process.env.STRIPE_SECRET_KEY);
 
-export const config = {
-  api: {
-    bodyParser: false, // Stripe requires the raw body for webhooks
-  },
-};
-
 export const POST = async (req) => {
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   const sig = req.headers["stripe-signature"];

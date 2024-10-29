@@ -39,8 +39,8 @@ export const POST = async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/expense`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/expense`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/expense?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/expense?canceled=true`,
       metadata: { userId: user._id.toString() },
     });
 

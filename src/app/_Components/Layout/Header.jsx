@@ -33,7 +33,7 @@ export default function Header({ onToggleTheme }) {
     console.log(stripe);
     try {
       const response = await axios.post(
-        "https://expensetracker-lake-alpha.vercel.app/api/stripe/checkout", // Ensure this is an absolute URL
+        "https://expensetracker-pi-one.vercel.app/api/stripe/checkout", // Ensure this is an absolute URL
         {},
         {
           headers: {

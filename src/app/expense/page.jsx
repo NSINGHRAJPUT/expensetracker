@@ -38,7 +38,7 @@ const ExpenseTracker = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expensetracker-lake-alpha.vercel.app/api/expense`,
+        `https://expensetracker-pi-one.vercel.app/api/expense`,
         {
           headers: {
             Authorization: `Bearer ${cookies.get("token")}`,

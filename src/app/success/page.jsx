@@ -15,7 +15,7 @@ export default function SuccessPage() {
 
       try {
         const response = await axios.get(
-          `https://expensetracker-lake-alpha.vercel.app/api/stripe/verify?session_id=${sessionId}`
+          `https://expensetracker-pi-one.vercel.app/api/stripe/verify?session_id=${sessionId}`
         );
         if (response.data.success) {
           toast.success("Payment successful");

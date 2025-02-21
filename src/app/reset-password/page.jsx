@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://expensetracker-lake-alpha.vercel.app/api/auth/send-otp",
+        "https://expensetracker-pi-one.vercel.app/api/auth/send-otp",
         { email },
         {
           headers: {

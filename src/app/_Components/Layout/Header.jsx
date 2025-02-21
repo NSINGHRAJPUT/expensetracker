@@ -4,24 +4,27 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Toaster, toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import Cookies from "universal-cookie";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
-export default function Header() {
+export default function Header({ onToggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const cookies = new Cookies();
   const [isPremium, setIsPremium] = useState(false);
   const router = useRouter();
-  const cookies = new Cookies();
 
   useEffect(() => {
     const token = cookies.get("token");
     if (token) {
       setIsLoggedIn(true);
+    }
+    if (cookies.get("isPremium")) {
+      setIsPremium(true);
     }
   }, []);
 
@@ -30,7 +33,7 @@ export default function Header() {
     console.log(stripe);
     try {
       const response = await axios.post(
-        "/api/stripe/checkout",
+        "https://expensetracker-lake-alpha.vercel.app/api/stripe/checkout", // Ensure this is an absolute URL
         {},
         {
           headers: {
@@ -41,7 +44,14 @@ export default function Header() {
       const data = response.data;
       console.log(data);
       if (data.success) {
-        await stripe.redirectToCheckout({ sessionId: data.sessionId });
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
+        if (!error) {
+          router.push("/expense"); // Redirect to /expense after successful payment
+        } else {
+          toast.error("Failed to initiate checkout");
+        }
       } else {
         toast.error("Failed to initiate checkout");
       }
@@ -53,8 +63,8 @@ export default function Header() {
 
   const handleLogout = () => {
     cookies.remove("token");
+    cookies.remove("isPremium");
     setIsLoggedIn(false);
-    setIsPremium(false); // Reset premium status on logout
     router.push("/");
   };
 
@@ -87,17 +97,21 @@ export default function Header() {
             isOpen ? "block" : "hidden"
           } absolute top-full left-0 w-full lg:static lg:block lg:w-auto bg-black lg:bg-transparent z-20 lg:flex lg:items-center`}
         >
-          <div className="lg:hidden flex flex-col items-center py-4">
-            {isPremium ? (
-              <button className="block py-2 px-4 text-white hover:text-gray-300">
-                Toggle Theme
-              </button>
-            ) : (
+          <div className="lg:flex lg:items-center lg:space-x-4 py-4 lg:py-0">
+            {isLoggedIn && !isPremium && (
               <button
                 onClick={handleCheckout}
                 className="block py-2 px-4 text-white hover:text-gray-300"
               >
                 Buy Premium
+              </button>
+            )}
+            {isPremium && (
+              <button
+                className="block py-2 px-4 text-white hover:text-gray-300"
+                onClick={onToggleTheme}
+              >
+                Toggle Theme
               </button>
             )}
             {isLoggedIn ? (

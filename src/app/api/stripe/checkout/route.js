@@ -1,6 +1,5 @@
 import expenseUser from "@/model/User";
 import { NextResponse } from "next/server";
-import authenticateToken from "@/middleware/auth";
 import jwt from "jsonwebtoken";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -33,14 +32,14 @@ export const POST = async (req) => {
             product_data: {
               name: "Premium Subscription",
             },
-            unit_amount: 999, // Amount in cents ($9.99)
+            unit_amount: 999,
           },
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/expense?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/expense?canceled=true`,
+      success_url: `https://expensetracker-lake-alpha.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://expensetracker-lake-alpha.vercel.app/expense?canceled=true`,
       metadata: { userId: user._id.toString() },
     });
 

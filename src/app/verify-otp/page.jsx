@@ -1,37 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Header from "../_Components/Layout/Header";
 import Footer from "../_Components/Layout/Footer";
 import Loader from "../_Components/Loader";
 import toast from "react-hot-toast";
 
-export default function SignUpPage() {
+function VerifyOtpForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://expensetracker-lake-alpha.vercel.app/api/signup",
-        formData,
+        "https://expensetracker-lake-alpha.vercel.app/api/auth/reset-password",
+        { token, otp, newPassword },
         {
           headers: {
             "Content-Type": "application/json",
@@ -40,12 +31,12 @@ export default function SignUpPage() {
       );
       console.log(response);
       if (response.status === 200) {
-        toast.success("Registration successful");
+        toast.success("Password reset successful");
         router.push("/login");
       }
     } catch (error) {
-      toast.error("Registration failed");
-      console.log("Error registering user:", error);
+      toast.error("Failed to reset password");
+      console.log("Error resetting password:", error);
     } finally {
       setLoading(false);
     }
@@ -62,21 +53,23 @@ export default function SignUpPage() {
             onSubmit={handleSubmit}
             encType="multipart/form-data"
           >
-            <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Verify OTP & Reset Password
+            </h2>
 
             <div className="mb-4">
               <label
-                htmlFor="name"
+                htmlFor="otp"
                 className="block text-gray-700 font-medium mb-2"
               >
-                Name
+                OTP
               </label>
               <input
                 type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
+                id="otp"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
                 required
                 className="border border-gray-300 p-2 w-full rounded"
               />
@@ -84,35 +77,17 @@ export default function SignUpPage() {
 
             <div className="mb-4">
               <label
-                htmlFor="email"
+                htmlFor="newPassword"
                 className="block text-gray-700 font-medium mb-2"
               >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="border border-gray-300 p-2 w-full rounded"
-              />
-            </div>
-
-            <div className="mb-6">
-              <label
-                htmlFor="password"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Password
+                New Password
               </label>
               <input
                 type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
+                id="newPassword"
+                name="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
                 required
                 className="border border-gray-300 p-2 w-full rounded"
               />
@@ -122,19 +97,20 @@ export default function SignUpPage() {
               type="submit"
               className="w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-700 transition duration-200"
             >
-              Sign Up
+              Reset Password
             </button>
           </form>
-
-          <p
-            className="mt-4 text-gray-500 cursor-pointer"
-            onClick={() => router.push("/login")}
-          >
-            already registered ? Sign In here
-          </p>
         </div>
       </div>
       <Footer />
     </div>
+  );
+}
+
+export default function VerifyOtpPage() {
+  return (
+    <Suspense fallback={<Loader />}>
+      <VerifyOtpForm />
+    </Suspense>
   );
 }

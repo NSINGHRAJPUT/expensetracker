@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Header from "../_Components/Layout/Header";
 import Footer from "../_Components/Layout/Footer";
+import Loader from "../_Components/Loader";
 import toast from "react-hot-toast";
 import Cookies from "universal-cookie";
 
@@ -15,6 +16,7 @@ export default function SignInPage() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,9 +28,7 @@ export default function SignInPage() {
 
   const test = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/test`
-      );
+      const response = await axios.get(`/api/test`);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -40,10 +40,11 @@ export default function SignInPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setLoading(true);
+    console.log("sign", formData);
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,
+        `https://expensetracker-lake-alpha.vercel.app/api/login`, // Ensure this is an absolute URL
         formData
       );
       console.log(response);
@@ -52,16 +53,22 @@ export default function SignInPage() {
         cookies.set("token", response.data.token, {
           path: "/",
         });
+        cookies.set("isPremium", response.data.isPremium, {
+          path: "/",
+        });
         router.push("/expense");
       }
     } catch (error) {
       toast.error("Login failed");
-      console.log("Error registering user:", error);
+      console.log("Error logging user:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="overflow-y-hidden h-screen">
+      {loading && <Loader />}
       <Header />
       <div className="min-h-[70vh] max-w-7xl mx-auto p-8 bg-gray-200 flex items-center justify-center">
         <div className="w-[] md:w-1/2 bg-white flex flex-col items-center justify-center p-8">
@@ -121,6 +128,12 @@ export default function SignInPage() {
             onClick={() => router.push("/signup")}
           >
             not yet registered ? Register here
+          </p>
+          <p
+            className="mt-4 text-gray-500 cursor-pointer"
+            onClick={() => router.push("/reset-password")}
+          >
+            Forgot password? Reset here
           </p>
         </div>
       </div>

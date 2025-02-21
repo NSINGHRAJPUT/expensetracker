@@ -37,6 +37,7 @@ export const POST = async (req) => {
     return NextResponse.json({
       success: true,
       message: "Login successful",
+      isPremium: user.isPremium,
       token,
     });
   } catch (error) {

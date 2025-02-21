@@ -56,8 +56,8 @@ export const POST = async (req) => {
     const userMailOptions = {
       from: process.env.EMAIL_USERNAME,
       to: email,
-      subject: "Welcome to Vehicle Rent Service!",
-      text: `Hi ${name},\n\nThank you for registering with us! We're excited to have you on board.\n\nBest regards,\nVehicle Rent Service Team`,
+      subject: "Welcome to Expense Tracker!",
+      text: `Hi ${name},\n\nThank you for registering with us! We're excited to have you on board.`,
     };
 
     // Email content for yourself (admin notification)

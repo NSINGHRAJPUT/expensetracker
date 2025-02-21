@@ -38,7 +38,7 @@ const ExpenseTracker = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expensetracker-pi-one.vercel.app/api/expense`,
+        `https://expensetracker.nsrgfx.in/api/expense`,
         {
           headers: {
             Authorization: `Bearer ${cookies.get("token")}`,

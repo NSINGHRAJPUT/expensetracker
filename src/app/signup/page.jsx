@@ -30,7 +30,7 @@ export default function SignUpPage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://expensetracker-pi-one.vercel.app/api/signup",
+        "https://expensetracker.nsrgfx.in/api/signup",
         formData,
         {
           headers: {

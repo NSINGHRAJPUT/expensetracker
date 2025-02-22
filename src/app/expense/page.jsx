@@ -83,7 +83,7 @@ const ExpenseTracker = () => {
         });
       } else {
         const response = await axios.post(
-          "https://expensetracker-lake-alpha.vercel.app/api/expense",
+          "/api/expense",
           expenseData,
           {
             headers: {

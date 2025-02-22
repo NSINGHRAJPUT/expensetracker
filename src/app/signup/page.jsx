@@ -30,7 +30,7 @@ export default function SignUpPage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://expensetracker.nsrgfx.in/api/signup",
+        "/api/signup",
         formData,
         {
           headers: {

@@ -33,7 +33,7 @@ export default function Header({ onToggleTheme }) {
     console.log(stripe);
     try {
       const response = await axios.post(
-        "https://expensetracker.nsrgfx.in/api/stripe/checkout", // Ensure this is an absolute URL
+        "/api/stripe/checkout", // Ensure this is an absolute URL
         {},
         {
           headers: {

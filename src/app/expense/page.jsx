@@ -38,7 +38,7 @@ const ExpenseTracker = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://expensetracker.nsrgfx.in/api/expense`,
+        `/api/expense`,
         {
           headers: {
             Authorization: `Bearer ${cookies.get("token")}`,

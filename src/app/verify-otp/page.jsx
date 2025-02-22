@@ -21,7 +21,7 @@ function VerifyOtpForm() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://expensetracker-lake-alpha.vercel.app/api/auth/reset-password",
+        "/api/auth/reset-password",
         { token, otp, newPassword },
         {
           headers: {

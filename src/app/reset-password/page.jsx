@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://expensetracker.nsrgfx.in/api/auth/send-otp",
+        "/api/auth/send-otp",
         { email },
         {
           headers: {

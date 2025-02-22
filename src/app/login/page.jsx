@@ -44,7 +44,7 @@ export default function SignInPage() {
     console.log("sign", formData);
     try {
       const response = await axios.post(
-        `https://expensetracker.nsrgfx.in/api/login`, // Ensure this is an absolute URL
+        `/api/login`, // Ensure this is an absolute URL
         formData
       );
       console.log(response);

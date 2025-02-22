@@ -15,7 +15,7 @@ export default function SuccessPage() {
 
       try {
         const response = await axios.get(
-          `https://expensetracker.nsrgfx.in/api/stripe/verify?session_id=${sessionId}`
+          `/api/stripe/verify?session_id=${sessionId}`
         );
         if (response.data.success) {
           toast.success("Payment successful");

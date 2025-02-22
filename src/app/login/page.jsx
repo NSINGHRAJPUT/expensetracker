@@ -44,7 +44,7 @@ export default function SignInPage() {
     console.log("sign", formData);
     try {
       const response = await axios.post(
-        `/api/login`, // Ensure this is an absolute URL
+        `http://localhost:3000/api/login`, // Ensure this is an absolute URL
         formData
       );
       console.log(response);
@@ -56,7 +56,7 @@ export default function SignInPage() {
         cookies.set("isPremium", response.data.isPremium, {
           path: "/",
         });
-        router.push("/expense");
+        // router.push("/expense");
       }
     } catch (error) {
       toast.error("Login failed");

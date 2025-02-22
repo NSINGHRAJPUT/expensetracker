@@ -38,8 +38,8 @@ export const POST = async (req) => {
         },
       ],
       mode: "payment",
-      success_url: `https://expensetracker-lake-alpha.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `https://expensetracker-lake-alpha.vercel.app/expense?canceled=true`,
+      success_url: `https://expensetracker.nsrgfx.in/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://expensetracker.nsrgfx.in/expense?canceled=true`,
       metadata: { userId: user._id.toString() },
     });
 

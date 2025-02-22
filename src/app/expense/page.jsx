@@ -128,7 +128,7 @@ const ExpenseTracker = () => {
     setLoading(true);
     try {
       await axios.delete(
-        `https://expensetracker-lake-alpha.vercel.app/api/expense`,
+        `/api/expense`,
         {
           headers: {
             authorization: `Bearer ${cookies.get("token")}`, // Send token in Authorization header
